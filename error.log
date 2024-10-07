@@ -1,0 +1,11 @@
+Your Requested /api/login ||Error: Your Requested /api/login 
+    at CreateError (E:\Laragon\www\mern\pos\server\src\utility\ErrorHandler.js:6:13)
+    at NotFoundError (E:\Laragon\www\mern\pos\server\src\utility\ErrorHandler.js:14:17)
+    at Layer.handle [as handle_request] (E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\index.js:328:13)
+    at E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\index.js:346:12)
+    at next (E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\index.js:280:10)
+    at E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\index.js:646:15
+    at next (E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\index.js:265:14)
+    at Function.handle (E:\Laragon\www\mern\pos\server\node_modules\express\lib\router\index.js:175:3)||Tue Oct 08 2024 02:01:40 GMT+0600 (Bangladesh Standard Time)
