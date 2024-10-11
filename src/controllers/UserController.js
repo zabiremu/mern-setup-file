@@ -54,6 +54,7 @@ exports.login = async (req, res) => {
 //! get User
 exports.profile_read = async (req, res) => {
   let email = req.headers.email;
+
   try {
     let MatchStage = {
       $match: {
@@ -102,4 +103,88 @@ exports.send_Email = async (req, res) => {
   } catch (e) {
     res.status(200).json({ status: "error", error: e.toString() });
   }
+};
+
+//! User Profile Update
+exports.ProfileUpdate = async (req, res) => {
+  try {
+    const user = req.headers.email;
+    const userProfile = await UserModel.findByIdAndUpdate(user, req.body);
+    return res.json({ status: "success", message: "user profile updated" });
+  } catch (error) {
+    res.status(500).json({ status: "fail", message: error });
+  }
+};
+
+//! Email Verify
+exports.EmailVerify = async (req, res) => {
+  const user = await UserModel.findOne({ email: req.body.email });
+
+  if (user === null) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Invalid credentials. Please check your user name try again.",
+    });
+  }
+  const generateCode = Math.floor(100000 + Math.random() * 900000);
+  const mailOptions = {
+    from: EMAIL_USER,
+    to: "zabirraihan570@gmailcom",
+    subject: "Email Verification",
+    text: `Your verification code is ${generateCode}`,
+  };
+
+  transporter.sendMail(mailOptions);
+  const userProfileUpdate = await USER_MODEL.findByIdAndUpdate(user._id, {
+    otp: generateCode,
+  });
+  return res.json({
+    status: "success",
+    message: "Your verification code is sent",
+  });
+};
+//! Code Verify
+exports.CodeVerify = async (req, res) => {
+  const user = await UserModel.findOne({ email: req.body.email });
+  if (user === null) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Invalid credentials. Please check your user name try again.",
+    });
+  }
+
+  if (user.otp !== req.body.otp) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Invalid credentials. Please check your otp try again.",
+    });
+  }
+
+  const userProfileUpdate = await USER_MODEL.findByIdAndUpdate(user._id, {
+    otpVerified: 1,
+  });
+  return res.json({
+    status: "success",
+    message: "Your account verified successfully",
+  });
+};
+//! Reset Password
+exports.ResetPassword = async (req, res) => {
+  const user = await UserModel.findOne({ email: req.body.email });
+  if (user === null) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Invalid credentials. Please check your user name try again.",
+    });
+  }
+
+  const userProfileUpdate = await UserModel.findByIdAndUpdate(user._id, {
+    password: req.body.password,
+  });
+  return res.json({
+    status: "success",
+    message: "password reset successfully",
+  });
+
+  return res.json({ status: "success" });
 };

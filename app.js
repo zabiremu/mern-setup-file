@@ -18,7 +18,7 @@ const {
 } = require("./src/utility/ErrorHandler");
 dotENV.config();
 
-let URL = "mongodb://localhost:27017/AuthProject";
+let URL = process.env.DATABASE_URL;
 
 mongoose
   .connect(URL)
@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: process.env.Origin_HOST,
+    origin: process.env.APP_URL,
   })
 );
 app.use(helmet());
@@ -41,10 +41,15 @@ app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
 
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: process.env.MAX_JSON_SIZE }));
+app.use(
+  express.urlencoded({ limit: process.env.MAX_JSON_SIZE, extended: true })
+);
 
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 3000 });
+const limiter = rateLimit({
+  windowMs: process.env.RATE_LIMIT,
+  max: process.env.RATE_LIMIT_MAX,
+});
 app.use(limiter);
 
 app.use("/api", router);

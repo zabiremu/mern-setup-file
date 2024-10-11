@@ -5,7 +5,6 @@ module.exports = (req, res, next) => {
 
   let decoded = DecodeToken(token);
 
-
   if (decoded === null) {
     return res.status(401).json({
       status: 401,

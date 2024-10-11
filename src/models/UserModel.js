@@ -3,10 +3,16 @@ const DataSchema = mongoose.Schema(
   {
     email: { type: String, unique: true, required: true, lowercase: true },
     password: { type: String, required: true },
-    firstName: { type: String },
-    lastName: { type: String },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     phone: { type: String },
     img: { type: String },
+    otp: { type: Number },
+    otpVerified: {
+      type: String,
+      enum: ["verified", "unverified"],
+      default: "unverified",
+    },
   },
   {
     timestamps: true,
