@@ -3,7 +3,7 @@ const router = express.Router();
 const AuthVerification = require("../middlewares/AuthVerification");
 const UserController = require("../controllers/UserController");
 const { optVerification } = require("../middlewares/OtpVerification");
-
+const upload = require("../utility/FileSave");
 //! User
 router.post("/register", UserController.register);
 router.post("/login", UserController.login);
@@ -21,7 +21,13 @@ router.post(
   UserController.send_Email
 );
 
-router.post("/profile-update", AuthVerification, UserController.ProfileUpdate);
+router.post(
+  "/profile-update",
+  AuthVerification,
+  optVerification,
+  upload.upload.single("file"),
+  UserController.ProfileUpdate
+);
 router.get("/email-verify/:email", UserController.EmailVerify);
 router.post("/codeVerify", UserController.CodeVerify);
 router.post("/reset-password", UserController.ResetPassword);

@@ -2,7 +2,9 @@ let md5 = require("md5");
 const UserModel = require("../models/UserModel");
 const { EncodeToken } = require("../utility/TokenHelper");
 const EmailSend = require("../utility/EmailSend");
-
+const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 //! Create user
 exports.register = async (req, res) => {
   try {
@@ -108,9 +110,26 @@ exports.send_Email = async (req, res) => {
 //! User Profile Update
 exports.ProfileUpdate = async (req, res) => {
   try {
-    const user = req.headers.email;
-    const userProfile = await UserModel.findByIdAndUpdate(user, req.body);
-    return res.json({ status: "success", message: "user profile updated" });
+    const email = req.headers.email;
+    req.image = req.file.filename;
+    // Delete the file like normal
+    const user = await UserModel.findOne({ email: email });
+    unlinkAsync("./src/public/uploads/" + user.img);
+    const userProfile = await UserModel.updateOne(
+      { email: email },
+      {
+        $set: {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          phone: req.body.phone,
+          img: req.image,
+        },
+      }
+    );
+    return res.json({
+      status: "success",
+      message: "user update successfully",
+    });
   } catch (error) {
     res.status(500).json({ status: "fail", message: error });
   }

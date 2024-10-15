@@ -6,13 +6,13 @@ const DataSchema = mongoose.Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     phone: { type: String },
-    img: { type: String },
     otp: { type: Number },
     otpVerified: {
       type: String,
       enum: ["verified", "unverified"],
       default: "unverified",
     },
+    img: { type: String },
   },
   {
     timestamps: true,

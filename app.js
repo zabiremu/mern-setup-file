@@ -12,6 +12,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const dotENV = require("dotenv");
+const multer = require("multer");
 const {
   DefaultErrorHandler,
   NotFoundError,
@@ -54,6 +55,13 @@ app.use(limiter);
 
 app.use("/api", router);
 
+// app.use("/api/file-save", upload.single("file"), async (req, res) => {
+//   const file = req.file;
+//   if (!file) {
+//     return res.status(400).json({ error: "File not found" });
+//   }
+//   res.status(200).json({ filename: file.filename });
+// });
 //Not Found Error Handler
 app.use(NotFoundError);
 
