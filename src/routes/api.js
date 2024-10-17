@@ -15,21 +15,11 @@ router.get(
   UserController.profile_read
 );
 router.post(
-  "/send-email",
-  AuthVerification,
-  optVerification,
-  UserController.send_Email
-);
-
-router.post(
   "/profile-update",
   AuthVerification,
   optVerification,
   upload.upload.single("file"),
   UserController.ProfileUpdate
 );
-router.get("/email-verify/:email", UserController.EmailVerify);
-router.post("/codeVerify", UserController.CodeVerify);
-router.post("/reset-password", UserController.ResetPassword);
 
 module.exports = router;
